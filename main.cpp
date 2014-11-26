@@ -1,6 +1,5 @@
 #include <QtGui/QApplication>
 #include "mainwidget.h"
-#include "dbcommon.h"
 #include <QTextCodec>
 
 int main(int argc, char *argv[])
@@ -9,10 +8,12 @@ int main(int argc, char *argv[])
     QTextCodec::setCodecForTr(code);
     //QTextCodec::setCodecForLocale(code);
     //QTextCodec::setCodecForCStrings(code);
-    DBCommon::get_instance()->init_database();
+
     QApplication a(argc, argv);
     MainWidget w;
     w.show();
+
+    DBCommon::get_instance()->init_database();//初始化数据库
 
     return a.exec();
 }

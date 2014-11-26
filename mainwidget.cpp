@@ -23,6 +23,7 @@ MainWidget::MainWidget(QWidget *parent) :
 
 MainWidget::~MainWidget()
 {
+    DBCommon::get_instance()->uninit_database();
     delete m_wgt_create;
     delete m_wgt_import;
     delete m_wgt_query;
@@ -42,6 +43,7 @@ void MainWidget::query_slot()
 void MainWidget::create_slot()
 {
     this->close();
+    m_wgt_create->data_init();
     m_wgt_create->show();
 }
 

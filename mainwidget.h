@@ -5,6 +5,7 @@
 #include "createwidget.h"
 #include "querywidget.h"
 #include "importwidget.h"
+#include "dbcommon.h"
 
 namespace Ui {
     class MainWidget;

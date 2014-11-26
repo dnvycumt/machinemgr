@@ -40,6 +40,17 @@
      <height>341</height>
     </rect>
    </property>
+   <property name="columnCount">
+    <number>2</number>
+   </property>
+   <attribute name="horizontalHeaderDefaultSectionSize">
+    <number>157</number>
+   </attribute>
+   <attribute name="verticalHeaderVisible">
+    <bool>true</bool>
+   </attribute>
+   <column/>
+   <column/>
   </widget>
   <widget class="QRadioButton" name="m_radio_rf">
    <property name="geometry">
@@ -108,6 +119,11 @@
      <width>89</width>
      <height>17</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>11</pointsize>
+    </font>
    </property>
    <property name="text">
     <string>RX</string>

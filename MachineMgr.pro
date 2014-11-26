@@ -5,6 +5,7 @@
 #-------------------------------------------------
 
 QT       += core gui
+QT += sql
 
 TARGET = MachineMgr
 TEMPLATE = app

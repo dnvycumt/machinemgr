@@ -28,7 +28,7 @@ int DBCommon::init_database()
     m_config.m_strIp = settings.value(strKey+"/ip").toString();
     m_config.m_strUser = settings.value(strKey+"/user").toString();
     m_config.m_strPwd = settings.value(strKey+"/pwd").toString();
-    m_config.m_strDB = settings.value(strKey+"/name").toString();
+    m_config.m_strDB = DEFAULT_DB;
 
     m_db = QSqlDatabase::addDatabase("QMYSQL");
     m_db.setHostName(m_config.m_strIp);

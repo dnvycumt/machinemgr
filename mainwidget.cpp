@@ -9,7 +9,7 @@ MainWidget::MainWidget(QWidget *parent) :
     ui->setupUi(this);
     setFixedSize(this->width(), this->height());
     move((QApplication::desktop()->width()-this->width())/2, (QApplication::desktop()->height()-this->height())/2);
-
+    this->setWindowTitle(tr("Ö÷½çÃæ"));
     m_wgt_create = new CreateWidget;
     m_wgt_import = new ImportWidget;
     m_wgt_query = new QueryWidget;
@@ -17,7 +17,8 @@ MainWidget::MainWidget(QWidget *parent) :
     connect(ui->m_btn_import, SIGNAL(clicked()), this, SLOT(import_slot()));
     connect(ui->m_btn_query, SIGNAL(clicked()), this, SLOT(query_slot()));
     connect(ui->m_btn_create, SIGNAL(clicked()), this, SLOT(create_slot()));
-    connect(m_wgt_create, SIGNAL(save_sig(QWidget*)), this, SLOT(back_slot(QWidget*)));
+    connect(m_wgt_create, SIGNAL(back_sig(QWidget*)), this, SLOT(back_slot(QWidget*)));
+    connect(m_wgt_import, SIGNAL(back_sig(QWidget*)), this, SLOT(back_slot(QWidget*)));
 }
 
 
@@ -32,7 +33,9 @@ MainWidget::~MainWidget()
 
 void MainWidget::import_slot()
 {
-
+    this->close();
+    m_wgt_import->data_init();
+    m_wgt_import->show();
 }
 
 void MainWidget::query_slot()

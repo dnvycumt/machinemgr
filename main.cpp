@@ -2,6 +2,9 @@
 #include "mainwidget.h"
 #include <QTextCodec>
 
+//创建数据库
+//create database rf;create database rx;create database mac;
+
 int main(int argc, char *argv[])
 {
     QTextCodec * code = QTextCodec::codecForName("system");
@@ -13,7 +16,7 @@ int main(int argc, char *argv[])
     MainWidget w;
     w.show();
 
-    DBCommon::get_instance()->init_database();//鍒濆鍖栨暟鎹簱
+    DBCommon::get_instance()->init_database();
 
     return a.exec();
 }

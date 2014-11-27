@@ -30,7 +30,7 @@ private:
 
 
 signals:
-    void save_sig(QWidget *);
+    void back_sig(QWidget *);
 
 private slots:
     void save_slot();
@@ -38,6 +38,7 @@ private slots:
     void rf_slot();
     void rx_slot();
     void mac_slot();
+    void on_m_btn_back_clicked();
 };
 
 #endif // CREATEWIDGET_H

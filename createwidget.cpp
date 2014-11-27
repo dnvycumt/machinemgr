@@ -6,7 +6,7 @@ CreateWidget::CreateWidget(QWidget *parent) :
     ui(new Ui::CreateWidget)
 {
     ui->setupUi(this);
-    m_strDbSelected = "rf";
+    m_strDbSelected = DEFAULT_DB;
     ui->m_radio_rf->setChecked(true);
     this->setWindowTitle(tr("新增产品表"));
     setFixedSize(this->width(), this->height());
@@ -53,7 +53,7 @@ void CreateWidget::save_slot()
     {
         return;
     }
-    emit save_sig(this);
+    emit back_sig(this);
 }
 
 void CreateWidget::add_slot()
@@ -109,8 +109,10 @@ void CreateWidget::mac_slot()
 void CreateWidget::data_init()
 {
     ui->m_edt_line->clear();
-
     ui->m_tbl_field->setRowCount(0);
+
+    m_strDbSelected = DEFAULT_DB;
+    ui->m_radio_rf->setChecked(true);
 }
 
 bool CreateWidget::create_table()
@@ -149,4 +151,9 @@ bool CreateWidget::create_table()
                      QMessageBox::Ok);
     }
     return bRetCode;
+}
+
+void CreateWidget::on_m_btn_back_clicked()
+{
+    emit back_sig(this);
 }

@@ -9,8 +9,10 @@
 #include <QSqlError>
 #include <QMessageBox>
 #include <QDebug>
+#include <QSqlQueryModel>
 
 #define INIT_FILE "db_config.ini"
+#define DEFAULT_DB "rf"
 
 class Config
 {
@@ -25,7 +27,7 @@ class DBCommon
 {
 public:
     static DBCommon* get_instance();
-    QSqlQuery get_connect(QString strDB="rf");
+    QSqlQuery get_connect(QString strDB=DEFAULT_DB);
     void uninit_database();
     int init_database();
 

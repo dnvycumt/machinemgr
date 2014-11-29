@@ -7,6 +7,8 @@
 QT       += core gui
 QT += sql
 
+CONFIG += qaxcontainer
+
 TARGET = MachineMgr
 TEMPLATE = app
 
@@ -16,13 +18,15 @@ SOURCES += main.cpp\
     createwidget.cpp \
     dbcommon.cpp \
     importwidget.cpp \
-    querywidget.cpp
+    querywidget.cpp \
+    qexcel.cpp
 
 HEADERS  += mainwidget.h \
     createwidget.h \
     dbcommon.h \
     importwidget.h \
-    querywidget.h
+    querywidget.h \
+    qexcel.h
 
 FORMS    += mainwidget.ui \
     createwidget.ui \

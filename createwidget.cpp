@@ -129,13 +129,9 @@ bool CreateWidget::create_table()
         QString strFieldLen = ui->m_tbl_field->item(i, 1)->text().trimmed();
         strSql +=strFieldName + " varchar(";
         strSql += strFieldLen + ")";
-        if(i == iRowCount - 1)
-        {
-            break;
-        }
         strSql += ",";
     }
-    strSql += ");";
+    strSql += "insert_dt TIMESTAMP DEFAULT now());";
     qDebug() << tr("Êý¾Ý¿â£º") << m_strDbSelected;
     qDebug() << strSql;
     bRetCode = DBCommon::get_instance()->get_connect(m_strDbSelected).exec(strSql);

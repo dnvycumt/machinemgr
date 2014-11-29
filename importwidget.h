@@ -40,6 +40,7 @@ private:
     QString m_strDbSelected;
 
     void get_tables();
+    int get_field_count();
 };
 
 #endif // IMPORTWIDGET_H

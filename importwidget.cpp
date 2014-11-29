@@ -1,5 +1,6 @@
 #include "importwidget.h"
 #include "ui_importwidget.h"
+#include "qexcel.h"
 
 ImportWidget::ImportWidget(QWidget *parent) :
     QWidget(parent),
@@ -23,6 +24,7 @@ void ImportWidget::on_m_tbtn_browse_clicked()
 void ImportWidget::data_init()
 {
     ui->m_edt_path->clear();
+    ui->m_lbl_status->clear();
 
     m_strDbSelected = DEFAULT_DB;
     ui->m_radio_rf->setChecked(true);
@@ -85,7 +87,112 @@ void ImportWidget::get_tables()
     }
 }
 
+int ImportWidget::get_field_count()
+{
+    bool bRetCode = false;
+    QString strSql = " select count(*) from information_schema.columns where TABLE_SCHEMA='";
+    strSql += m_strDbSelected + "' and TABLE_NAME='";
+    strSql += ui->m_cmb_table->currentText() + "';";
+    qDebug()<<strSql;
+    QSqlQuery query =  DBCommon::get_instance()->get_connect(m_strDbSelected);
+    bRetCode =query.exec(strSql);
+    if(!bRetCode)
+    {
+        QMessageBox::critical(NULL,tr("获取表字段数失败"),
+                     DBCommon::get_instance()->get_connect(m_strDbSelected).lastError().text());
+    }
+
+    QSqlQueryModel model;
+    model.setQuery(query);
+
+    return model.index(0,0).data().toInt();
+}
+
 void ImportWidget::on_m_btn_import_clicked()
 {
+    ui->m_lbl_status->setText(tr("正在努力导入中，请稍等..."));
+    QString strExcel = ui->m_edt_path->text().trimmed();
+    if(strExcel.isEmpty())
+    {
+        QMessageBox::critical(NULL,tr("注意"), tr("请选择要倒入的excel文件"), QMessageBox::Ok);
+    }
 
+    //打开文件，取得工作簿
+    QExcel excel(strExcel);
+    excel.selectSheet(1);
+    excel.getSheetName();
+    qDebug()<<"SheetName 1="<<excel.getSheetName(1);
+
+    int topLeftRow=0, topLeftColumn=0, bottomRightRow=0, bottomRightColumn=0;
+    excel.getUsedRange(&topLeftRow, &topLeftColumn, &bottomRightRow, &bottomRightColumn);
+    qDebug()<<"top:"<<topLeftRow<<" "<<topLeftColumn;
+    qDebug()<<"bottom:"<<bottomRightRow<<" "<<bottomRightColumn;
+
+    //获取表的字段数
+    int iFieldCnt = get_field_count();
+    if(iFieldCnt <= 0)
+    {
+        QMessageBox::critical(NULL,tr("表没创建"),tr("请先创建表"), QMessageBox::Ok);
+    }
+    else if(iFieldCnt != bottomRightColumn)
+    {
+        int iRet = QMessageBox::question(NULL,tr("注意"),tr("表字段与excel中字段数不一样，是否继续导入"), QMessageBox::Yes | QMessageBox::No);
+        if(iRet == QMessageBox::No)
+        {
+            ui->m_lbl_status->setText(tr("已放弃导入"));
+            return;
+        }
+    }
+
+    //导入数据库
+    QString strHead = "insert into ";
+    strHead += ui->m_cmb_table->currentText() + " values";
+    QString strSql = strHead;
+    qDebug()<<"excel column:"<<bottomRightColumn;
+    qDebug()<<"table column:"<<iFieldCnt;
+    int iIdx = 0;
+    for(int i = 2; i <= bottomRightRow; ++i)
+    {
+        ++iIdx;
+        strSql += "(";
+        for(int j = 1; j <= iFieldCnt-1; ++j)
+        {
+            QString strValue = "";
+            if(j <= bottomRightColumn)
+            {
+                strValue = excel.getCellValue(i, j).toString();
+            }
+            strSql += "'" + strValue +"',";
+        }
+        strSql += "now())";
+        if(iIdx%2 != 0)
+        {
+            if(i != bottomRightRow)
+                strSql += ",";
+        }
+        else
+        {
+            iIdx = 0;
+            QSqlQuery query =  DBCommon::get_instance()->get_connect(m_strDbSelected);
+            bool bRetCode =query.exec(strSql);
+            if(!bRetCode)
+            {
+                ui->m_lbl_status->setText(tr("导入失败"));
+                QMessageBox::critical(NULL,tr("导入失败"),
+                             DBCommon::get_instance()->get_connect(m_strDbSelected).lastError().text());
+                return;
+            }
+            strSql = strHead;
+        }
+    }
+    qDebug()<<"idx="<<iIdx;
+    if(iIdx != 0)
+    {
+        QSqlQuery query =  DBCommon::get_instance()->get_connect(m_strDbSelected);
+        qDebug()<<strSql;
+        query.exec(strSql);
+    }
+
+    QMessageBox::information(NULL,tr("成功"),tr("excel导入数据库成功"), QMessageBox::Ok);
+    emit back_sig(this);
 }

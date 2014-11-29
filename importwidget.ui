@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>249</height>
+    <height>264</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -188,6 +188,19 @@
    </property>
    <property name="text">
     <string>返回</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="m_lbl_status">
+   <property name="geometry">
+    <rect>
+     <x>60</x>
+     <y>230</y>
+     <width>291</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
    </property>
   </widget>
  </widget>

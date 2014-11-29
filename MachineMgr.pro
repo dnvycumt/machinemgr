@@ -5,7 +5,7 @@
 #-------------------------------------------------
 
 QT       += core gui
-QT += sql
+QT += sql network
 
 CONFIG += qaxcontainer
 
@@ -19,19 +19,24 @@ SOURCES += main.cpp\
     dbcommon.cpp \
     importwidget.cpp \
     querywidget.cpp \
-    qexcel.cpp
+    qexcel.cpp \
+    qsingleapplication.cpp \
+    waitwidgiet.cpp
 
 HEADERS  += mainwidget.h \
     createwidget.h \
     dbcommon.h \
     importwidget.h \
     querywidget.h \
-    qexcel.h
+    qexcel.h \
+    qsingleapplication.h \
+    waitwidgiet.h
 
 FORMS    += mainwidget.ui \
     createwidget.ui \
     importwidget.ui \
-    querywidget.ui
+    querywidget.ui \
+    waitwidgiet.ui
 
 
 

@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QFileDialog>
 #include "dbcommon.h"
+#include "waitwidgiet.h"
 
 namespace Ui {
     class ImportWidget;
@@ -36,6 +37,7 @@ private slots:
 
 private:
     Ui::ImportWidget *ui;
+    WaitWidgiet *m_wgt_wait;
 
     QString m_strDbSelected;
 

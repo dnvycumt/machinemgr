@@ -7,11 +7,15 @@ ImportWidget::ImportWidget(QWidget *parent) :
     ui(new Ui::ImportWidget)
 {
     ui->setupUi(this);
+    m_wgt_wait = new WaitWidgiet;
     this->setWindowTitle(tr("导入EXCEL"));
+
+    move((QApplication::desktop()->width()-this->width())/2, (QApplication::desktop()->height()-this->height())/2);
 }
 
 ImportWidget::~ImportWidget()
 {
+    delete m_wgt_wait;
     delete ui;
 }
 
@@ -111,10 +115,13 @@ int ImportWidget::get_field_count()
 void ImportWidget::on_m_btn_import_clicked()
 {
     ui->m_lbl_status->setText(tr("正在努力导入中，请稍等..."));
+    m_wgt_wait->setContent(tr("正在努力导入中，请稍等..."));
     QString strExcel = ui->m_edt_path->text().trimmed();
     if(strExcel.isEmpty())
     {
+        m_wgt_wait->close();
         QMessageBox::critical(NULL,tr("注意"), tr("请选择要倒入的excel文件"), QMessageBox::Ok);
+        m_wgt_wait->show();
     }
 
     //打开文件，取得工作簿
@@ -132,16 +139,20 @@ void ImportWidget::on_m_btn_import_clicked()
     int iFieldCnt = get_field_count();
     if(iFieldCnt <= 0)
     {
+        m_wgt_wait->close();
         QMessageBox::critical(NULL,tr("表没创建"),tr("请先创建表"), QMessageBox::Ok);
+        m_wgt_wait->show();
     }
     else if(iFieldCnt != bottomRightColumn)
     {
+        m_wgt_wait->close();
         int iRet = QMessageBox::question(NULL,tr("注意"),tr("表字段与excel中字段数不一样，是否继续导入"), QMessageBox::Yes | QMessageBox::No);
         if(iRet == QMessageBox::No)
         {
             ui->m_lbl_status->setText(tr("已放弃导入"));
             return;
         }
+        m_wgt_wait->show();
     }
 
     //导入数据库
@@ -178,8 +189,10 @@ void ImportWidget::on_m_btn_import_clicked()
             if(!bRetCode)
             {
                 ui->m_lbl_status->setText(tr("导入失败"));
+                m_wgt_wait->close();
                 QMessageBox::critical(NULL,tr("导入失败"),
                              DBCommon::get_instance()->get_connect(m_strDbSelected).lastError().text());
+
                 return;
             }
             strSql = strHead;
@@ -193,6 +206,7 @@ void ImportWidget::on_m_btn_import_clicked()
         query.exec(strSql);
     }
 
+    m_wgt_wait->close();
     QMessageBox::information(NULL,tr("成功"),tr("excel导入数据库成功"), QMessageBox::Ok);
     emit back_sig(this);
 }

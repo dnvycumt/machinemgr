@@ -57,7 +57,7 @@
     <rect>
      <x>10</x>
      <y>480</y>
-     <width>89</width>
+     <width>51</width>
      <height>17</height>
     </rect>
    </property>
@@ -107,6 +107,11 @@
      <height>61</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <pointsize>11</pointsize>
+    </font>
+   </property>
    <property name="text">
     <string>保存</string>
    </property>
@@ -116,7 +121,7 @@
     <rect>
      <x>80</x>
      <y>480</y>
-     <width>89</width>
+     <width>41</width>
      <height>17</height>
     </rect>
    </property>
@@ -134,9 +139,14 @@
     <rect>
      <x>150</x>
      <y>480</y>
-     <width>89</width>
+     <width>71</width>
      <height>17</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>11</pointsize>
+    </font>
    </property>
    <property name="text">
     <string>写MAC</string>

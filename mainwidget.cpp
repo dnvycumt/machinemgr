@@ -19,6 +19,7 @@ MainWidget::MainWidget(QWidget *parent) :
     connect(ui->m_btn_create, SIGNAL(clicked()), this, SLOT(create_slot()));
     connect(m_wgt_create, SIGNAL(back_sig(QWidget*)), this, SLOT(back_slot(QWidget*)));
     connect(m_wgt_import, SIGNAL(back_sig(QWidget*)), this, SLOT(back_slot(QWidget*)));
+    connect(m_wgt_query, SIGNAL(back_sig(QWidget*)), this, SLOT(back_slot(QWidget*)));
 }
 
 
@@ -40,7 +41,9 @@ void MainWidget::import_slot()
 
 void MainWidget::query_slot()
 {
-
+    this->close();
+    m_wgt_query->data_init();
+    m_wgt_query->show();
 }
 
 void MainWidget::create_slot()

@@ -9,7 +9,7 @@ ImportWidget::ImportWidget(QWidget *parent) :
     ui->setupUi(this);
     m_wgt_wait = new WaitWidgiet;
     this->setWindowTitle(tr("导入EXCEL"));
-
+    setFixedSize(this->width(), this->height());
     move((QApplication::desktop()->width()-this->width())/2, (QApplication::desktop()->height()-this->height())/2);
 }
 
@@ -33,7 +33,6 @@ void ImportWidget::data_init()
     m_strDbSelected = DEFAULT_DB;
     ui->m_radio_rf->setChecked(true);
 
-    ui->m_cmb_table->addItem(tr("请选择要导入的表"));
     get_tables();
 }
 
@@ -79,6 +78,7 @@ void ImportWidget::get_tables()
     {
         QMessageBox::critical(NULL,tr("show tables failed"),
                      DBCommon::get_instance()->get_connect(m_strDbSelected).lastError().text());
+        return;
     }
 
     QSqlQueryModel model;
@@ -104,6 +104,7 @@ int ImportWidget::get_field_count()
     {
         QMessageBox::critical(NULL,tr("获取表字段数失败"),
                      DBCommon::get_instance()->get_connect(m_strDbSelected).lastError().text());
+        return 0;
     }
 
     QSqlQueryModel model;
@@ -171,7 +172,7 @@ void ImportWidget::on_m_btn_import_clicked()
             QString strValue = "";
             if(j <= bottomRightColumn)
             {
-                strValue = excel.getCellValue(i, j).toString();
+                strValue = excel.getCellValue(i, j).toString().trimmed();
             }
             strSql += "'" + strValue +"',";
         }

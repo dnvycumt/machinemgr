@@ -24,15 +24,10 @@ signals:
 
 private slots:
     void on_m_tbtn_browse_clicked();
-
     void on_m_btn_back_clicked();
-
     void on_m_radio_rf_toggled(bool checked);
-
     void on_m_radio_rx_clicked(bool checked);
-
     void on_m_radio_mac_toggled(bool checked);
-
     void on_m_btn_import_clicked();
 
 private:
